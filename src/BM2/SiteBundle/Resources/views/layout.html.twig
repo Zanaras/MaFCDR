@@ -212,6 +212,9 @@
 			{{ gametime(false, 'current') }}<br />
 			{{ untilturn() }}<br />
 			server time: {{ "now"|date("H:i") }}
+			{% if is_granted('ROLE_ADMIN') %}
+				<br />{{ gamteime(false, 'gamemaster') }}
+			{% endif %}
 		</div>
 		<hr />
 		{% endif %}
