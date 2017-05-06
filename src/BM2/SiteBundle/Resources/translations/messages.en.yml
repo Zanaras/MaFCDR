@@ -6,6 +6,7 @@ gametime:
  current:     It is year %year%, week %week%, day %day% in the world of Might & Fealty
  long:        year %year%, week %week%, day %day%
  short:       %year%-%week%-%day%
+ gamemaster:  Game cycle %cycle%.
 realtime:
  forever:     eternity
  day:         %d% day (real time)|%d% days (real time)
