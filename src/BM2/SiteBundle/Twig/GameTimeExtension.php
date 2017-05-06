@@ -63,7 +63,7 @@ class GameTimeExtension extends \Twig_Extension {
 		$week = floor($cycle%360/6)+1;
 		$day = ($cycle%6)+1;
 
-		return $this->trans->trans("gametime.".$format, array('%year%'=>$year, '%week%'=>$week, '%day%'=>$day));
+		return $this->trans->trans("gametime.".$format, array('%cycle%'=>$cycle, '%year%'=>$year, '%week%'=>$week, '%day%'=>$day));
 	}
 
 	public function untilTurnFunction() {
