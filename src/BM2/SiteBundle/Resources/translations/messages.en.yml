@@ -52,6 +52,7 @@ menu:
   background: character background
   start:    character placement
  dungeon:   dungeon
+ game:      admin
 
 contact:
  title:     Contact
