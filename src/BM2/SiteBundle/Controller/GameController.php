@@ -29,10 +29,23 @@ class GameController extends Controller {
 	private $high_moving_average_cycles = 24; // 4 game weeks
 
 	/**
-	  * @Route("/")
-	  * @Template("BM2SiteBundle:Game:status.html.twig")
+	  * @Route("/", name="bm2_game_index")
+	  * @Template("BM2SiteBundle:Game:index.html.twig")
 	  */
-	public function indexAction($time_spent=0) {
+	public function indexAction(){
+		$game = $this->get('game_runner');
+		$cycle = $game->getCycle();
+		
+		return array(
+			'cycle' => $cycle
+		);
+	}
+	
+	/**
+	  * @Route("/status", name="bm2_game_status")
+	  * @Template
+	  */
+	public function statusAction($time_spent=0) {
 		$game = $this->get('game_runner');
 		$status = array();
 
@@ -64,7 +77,7 @@ class GameController extends Controller {
 	}
 
 	/**
-	  * @Route("/users")
+	  * @Route("/users", name="bm2_game_users")
 	  * @Template
 	  */
 	public function usersAction() {
@@ -75,10 +88,12 @@ class GameController extends Controller {
 		foreach ($query->getResult() as $user) {
 			if ($user->getLivingCharacters()->count()>0) {
 				$users[] = array(
+					'id' => $user->getId(),
 					'name' => $user->getUsername(),
 					'level' => $user->getAccountLevel(),
 					'last_login' => $user->getLastLogin(),
-					'characters' => $user->getLivingCharacters()->count(),
+					'active' => $user->getActiveCharacters()->count(),
+					'characters' => $user->getLivingCharacters()->count()
 				);
 			}
 		}
@@ -88,7 +103,7 @@ class GameController extends Controller {
 
 
    /**
-     * @Route("/statistics/{start}", requirements={"start"="\d+"}, defaults={"start"=-1})
+     * @Route("/statistics/{start}", requirements={"start"="\d+"}, defaults={"start"=-1}, name="bm2_game_stats")
      * @Template
      */
 	public function statisticsAction($start) {
@@ -225,7 +240,7 @@ class GameController extends Controller {
 
 
 	/**
-	  * @Route("/statistics/realm/{realm}", requirements={"realm"="\d+"})
+	  * @Route("/statistics/realm/{realm}", requirements={"realm"="\d+"}, name="bm2_game_stats_realm")
 	  * @Template
 	  */
 	public function realmdataAction(Realm $realm) {
@@ -257,7 +272,7 @@ class GameController extends Controller {
 	}
 
 	/**
-	  * @Route("/statistics/settlement/{settlement}", requirements={"settlement"="\d+"})
+	  * @Route("/statistics/settlement/{settlement}", requirements={"settlement"="\d+", name="bm2_game_stats_settlement"})
 	  * @Template
 	  */
 	public function settlementdataAction(Settlement $settlement) {
@@ -286,7 +301,7 @@ class GameController extends Controller {
 	}
 
 	/**
-	  * @Route("/statistics/realms")
+	  * @Route("/statistics/realms", name="bm2_game_stats_realms")
 	  * @Template
 	  */
 	public function realmstatisticsAction() {
@@ -312,7 +327,7 @@ class GameController extends Controller {
 	}
 
 	/**
-	  * @Route("/statistics/battles")
+	  * @Route("/statistics/battles", name="bm_game_stats_battles")
 	  * @Template
 	  */
 	public function battlestatisticsAction() {
@@ -355,7 +370,7 @@ class GameController extends Controller {
 	}
 
 	/**
-	  * @Route("/statistics/troops")
+	  * @Route("/statistics/troops", name="bm2_game_stats_soldiers")
 	  * @Template
 	  */
 	public function troopsstatisticsAction() {
@@ -423,7 +438,7 @@ class GameController extends Controller {
 	}
 
 	/**
-	  * @Route("/statistics/roads")
+	  * @Route("/statistics/roads", name="bm2_game_stats_roads")
 	  * @Template
 	  */
 	public function roadsstatisticsAction() {
@@ -440,7 +455,7 @@ class GameController extends Controller {
 	}
 
 	/**
-	  * @Route("/statistics/resources")
+	  * @Route("/statistics/resources", name="bm2_game_stats_resources")
 	  * @Template
 	  */
 	public function resourcesdataAction() {
@@ -469,7 +484,7 @@ class GameController extends Controller {
 
 
     /**
-     * @Route("/settlements")
+     * @Route("/settlements", name="bm2_game_settlements")
      * @Template
      */
 	public function settlementsAction() {
@@ -485,7 +500,7 @@ class GameController extends Controller {
 	}
    
    /**
-     * @Route("/heraldry")
+     * @Route("/heraldry", name="bm2_game_heraldry")
      * @Template
      */
 	public function heraldryAction() {
@@ -498,7 +513,7 @@ class GameController extends Controller {
 	}
    
 	/**
-     * @Route("/techtree")
+     * @Route("/techtree", name="bm2_game_techtree")
      * @Template
      */
 	public function techtreeAction() {
@@ -546,7 +561,7 @@ class GameController extends Controller {
 
 
 	/**
-	  * @Route("/diplomacy")
+	  * @Route("/diplomacy", name="bm2_game_diplomacy")
 	  * @Template
 	  */
 	public function diplomacyAction() {
@@ -566,7 +581,7 @@ class GameController extends Controller {
 
 
 	/**
-	  * @Route("/buildings")
+	  * @Route("/buildings", name="bm2_game_buildings")
 	  * @Template
 	  */
 	public function buildingsAction() {
