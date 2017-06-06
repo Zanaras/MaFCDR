@@ -1,0 +1,27 @@
+{% block menu %}
+<ul>
+	<li><a href="{{ path('bm2_game_status') }}">{{ 'menu.game.status'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_users') }}">{{ 'menu.game.users'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_stats') }}">{{ 'menu.game.stats'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_stats_realms') }}">{{ 'menu.game.realms'|trans }}</a>
+		<ul>
+			<li><a href="{{ path('bm2_game_stats_realm', {'realm': '1'}) }}">{{ 'menu.game.realm'|trans }}</a></li>
+		</ul>
+	</li>
+	<li>{{ 'menu.game.compare'|trans }}
+		<ul>
+			<li><a href="{{ path('bm2_game_stats', {'what': 'area'}) }}">{{ 'menu.game.compare.area'|trans }}</a></li>
+			<li><a href="{{ path('bm2_game_stats', {'what': 'soldiers'}) }}">{{ 'menu.game.compare.soldiers'|trans }}</a></li>
+		</ul>
+	</li>
+	<li><a href="{{ path('bm2_game_stats_battles') }}">{{ 'menu.game.battles'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_stats_soldiers') }}">{{ 'menu.game.soldiers'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_stats_roads') }}">{{ 'menu.game.roads'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_stats_resources') }}">{{ 'menu.game.resources'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_settlements') }}">{{ 'menu.game.settlements'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_herladry') }}">{{ 'menu.game.heraldry'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_techtree') }}">{{ 'menu.game.techtree'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_diplomacy') }}">{{ 'menu.game.diplomacy'|trans }}</a></li>
+	<li><a href="{{ path('bm2_game_buildings') }}">{{ 'menu.game.buildings'|trans }}</a></li>
+</ul>
+{% endblock %}
