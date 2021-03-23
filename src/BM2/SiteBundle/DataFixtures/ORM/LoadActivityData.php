@@ -12,7 +12,7 @@ use BM2\SiteBundle\Entity\BuildingType;
 use BM2\SiteBundle\Entity\PlaceType;
 
 
-class LoadActivityRequirementsData extends AbstractFixture implements OrderedFixtureInterface {
+class LoadActivityData extends AbstractFixture implements OrderedFixtureInterface {
 
 	private $types = array(
 		'duel'			=> ['enabled' => True],
@@ -38,6 +38,13 @@ class LoadActivityRequirementsData extends AbstractFixture implements OrderedFix
 	public function load(ObjectManager $manager) {
 		foreach ($this->types as $name=>$data) {
 			$type = $manager->getRepository(ActivityType::class)->findOneBy(['name'=>$name]);
+			if (!$type) {
+				$type = new ActivityType();
+				$manager->persist($type);
+				$type->setName($name);
+			}
+			$type->setEnabled($data['enabled']);
+			$manager->flush();
 			if ($type) {
 				$id = $type->getId();
 				if ($data['buildings']) {
