@@ -12,7 +12,7 @@ use BM2\SiteBundle\Entity\BuildingType;
 use BM2\SiteBundle\Entity\PlaceType;
 
 
-class LoadBiomeData extends AbstractFixture implements OrderedFixtureInterface {
+class LoadActivityRequirementsData extends AbstractFixture implements OrderedFixtureInterface {
 
 	private $types = array(
 		'duel'			=> ['enabled' => True],
@@ -29,7 +29,7 @@ class LoadBiomeData extends AbstractFixture implements OrderedFixtureInterface {
 	 * {@inheritDoc}
 	 */
 	public function getOrder() {
-		return 15; // Must be after Buildings (1) and Places (1).
+		return 15; // Must be after Buildings (1), Places (1), and Activities (1).
 	}
 
 	/**
