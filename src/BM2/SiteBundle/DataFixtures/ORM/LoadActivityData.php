@@ -6,25 +6,30 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use BM2\SiteBundle\Entity\Biome;
+use BM2\SiteBundle\Entity\ActivityType;
+use BM2\SiteBundle\Entity\ActivityRequirement;
+use BM2\SiteBundle\Entity\BuildingType;
+use BM2\SiteBundle\Entity\PlaceType;
 
 
 class LoadBiomeData extends AbstractFixture implements OrderedFixtureInterface {
 
 	private $types = array(
-		'duel'			=> array('enabled' => True),
-		'tournament'		=> array('enabled' => False, 'buildings' => ['arena']),
-		'joust'			=> array('enabled' => False, 'buildings' => 0.95, 'roads' => 1.00, 'features' => 1.00),
-		'race'			=> array('enabled' => False, 'buildings' => ['race track']),
-		'hunt'			=> array('enabled' => False),
-		'ball'			=> array('enabled' => False),
+		'duel'			=> ['enabled' => True],
+		'arena'			=> ['enabled' => False, 'buildings' => ['arena', 'tournament'], 'places' => ['arena', 'tournament']],
+		'melee tournament'	=> ['enabled' => False, 'buildings' => ['arena', 'tournament'], 'places' => ['arena', 'tournament']],
+		'joust'			=> ['enabled' => False, 'places' => ['tournament']],
+		'grand tournament'	=> ['enabled' => False, 'buildings' => ['arena', 'archery range'], 'places' => ['tournament']
+		'race'			=> ['enabled' => False, 'buildings' => ['race track'], 'places' => ['track']],
+		'hunt'			=> ['enabled' => False, 'buildings' => ['hunters lodge'], 'places' => ['tournament']],
+		'ball'			=> ['enabled' => False, 'places' =>['home', 'capital', 'castle', 'embassy'],
 	);
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function getOrder() {
-		return 1; // or anywhere, really
+		return 15; // Must be after Buildings (1) and Places (1).
 	}
 
 	/**
@@ -32,13 +37,44 @@ class LoadBiomeData extends AbstractFixture implements OrderedFixtureInterface {
 	 */
 	public function load(ObjectManager $manager) {
 		foreach ($this->types as $name=>$data) {
-			$type = new Biome;
-			$type->setName($name);
-			$type->setSpot($data['spot']);
-			$type->setTravel($data['travel']);
-			$type->setRoadConstruction($data['roads']);
-			$type->setFeatureConstruction($data['features']);
-			$manager->persist($type);
+			$type = $manager->getRepository(ActivityType::class)->findOneBy(['name'=>$name]);
+			if ($type) {
+				$id = $type->getId();
+				if ($data['buildings']) {
+					foreach ($data['buildings'] as $bldg) {
+						$bldgType = $manager->getRepository(BuildingType::class)->findOneBy(['name'=>$bldg]);
+						if ($bldgType) {
+							$req = $manager->getRepository(ActivityRequirement::class)->findOneBy(['type'=>$id, 'building'=>$bldgType->getId()]);
+							if (!$req) {
+								$req = new ActivityRequirement();
+								$manager->persist($req);
+								$req->setType($id);
+								$req->setBuilding($bldgType);
+							}
+						} else {
+							echo 'No Building Type found matching string of '.$bldg.', loading skipped.';
+						}
+					}
+				}
+				if ($data['places']) {
+					foreach ($data['places'] as $place) {
+						$placeType = $manager->getRepository(PlaceType::class)->findOneBy(['name'=>$place]);
+						if ($placeType) {
+							$req = $manager->getRepository(ActivityRequirement::class)->findOneBy(['type'=>$id, 'place'=>$placeType->getId()]);
+							if (!$req) {
+								$req = new ActivityRequirement();
+								$manager->persist($req);
+								$req->setType($id);
+								$req->setPlace($placeType);
+							}
+						} else {
+							echo 'No Place Type found matching string of '.$place.', loading skipped.';
+						}
+					}
+				}
+			} else {
+				echo 'No Activty Type found matching string of '.$name.', loading skipped.';
+			}
 		}
 		$manager->flush();
 	}
