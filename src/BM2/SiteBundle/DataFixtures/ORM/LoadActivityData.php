@@ -19,10 +19,10 @@ class LoadActivityData extends AbstractFixture implements OrderedFixtureInterfac
 		'arena'			=> ['enabled' => False, 'buildings' => ['arena', 'tournament'], 'places' => ['arena', 'tournament']],
 		'melee tournament'	=> ['enabled' => False, 'buildings' => ['arena', 'tournament'], 'places' => ['arena', 'tournament']],
 		'joust'			=> ['enabled' => False, 'places' => ['tournament']],
-		'grand tournament'	=> ['enabled' => False, 'buildings' => ['arena', 'archery range'], 'places' => ['tournament']
+		'grand tournament'	=> ['enabled' => False, 'buildings' => ['arena', 'archery range'], 'places' => ['tournament']],
 		'race'			=> ['enabled' => False, 'buildings' => ['race track'], 'places' => ['track']],
 		'hunt'			=> ['enabled' => False, 'buildings' => ['hunters lodge'], 'places' => ['tournament']],
-		'ball'			=> ['enabled' => False, 'places' =>['home', 'capital', 'castle', 'embassy'],
+		'ball'			=> ['enabled' => False, 'places' =>['home', 'capital', 'castle', 'embassy']],
 	);
 
 	/**
