@@ -160,7 +160,7 @@ class LoadBuildingData extends AbstractFixture implements OrderedFixtureInterfac
 		'Filled Moat'		=> array('wood'=>array('construction'=>5000), 'metal'=>array('construction'=>200), 'goods'=>array('construction'=>300, 'operation'=>3)),
 		'Quarry'		=> array('wood'=>array('construction'=>3000, 'operation'=>100), 'metal'=>array('construction'=>1000, 'operation'=>50, 'bonus'=>20), 'goods'=>array('construction'=>300, 'operation'=>2, 'bonus'=>1)),
 		
-		'Hunters Lodge'         => array('wood'=>array('construction'=>1800, 'bonus'=>1), 'metal'=>array('construction'=>100), 'food'=>array('provides'=>5, 'bonus'=>5),
+		'Hunters Lodge'         => array('wood'=>array('construction'=>1800, 'bonus'=>1), 'metal'=>array('construction'=>100), 'food'=>array('provides'=>5, 'bonus'=>5)),
 	);
 
 	/**
