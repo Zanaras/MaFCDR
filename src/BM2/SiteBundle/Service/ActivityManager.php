@@ -30,7 +30,7 @@ class ActionManager {
 	/*
 	HELPER FUNCTIONS
 	*/
-	
+
         public function verify(ActivityType $act, Character $char) {
 		$valid = True;
 		if ($reqs = $act->getRequires()) {
@@ -39,7 +39,7 @@ class ActionManager {
 			$hasBldgs = True;
 			$hasPlace = False;
 			foreach ($reqs as $req) {
-				# If the requirement has a building type, as $hasBldgs is still true, we check. If getBuilding is null this one is for a place, 
+				# If the requirement has a building type, as $hasBldgs is still true, we check. If getBuilding is null this one is for a place,
 				# and if $hasBldgs is false, then we've already failed the verification.
 				if ($bldg = $req->getBuilding() && $hasBldgs) {
 					if ($char->getInsideSettlement() && !$char->getInsideSettlement()->getBuildingByName($bldg)) {
@@ -92,7 +92,7 @@ class ActionManager {
 			return False;
 		}
         }
-	
+
 	public function createBout(Activity $act, ActivityType $type, $round=null) {
 		$bout = new ActivityBout();
 		$this->em->persist($bout);
@@ -101,7 +101,7 @@ class ActionManager {
 		$bout->setNumber($round);
 		return $bout;
 	}
-	
+
 	public function createParticipant(Activity $act, Character $char, Style	$style=null) {
 		$part = new ActivityParticipant();
 		$this->em->persist($part);
@@ -110,7 +110,7 @@ class ActionManager {
 		$part->setStyle($style);
 		return $part;
 	}
-	
+
 	public function createGroup(Activity $act, $participants) {
 		# $participants should be an array or arraycollection of ActivityParticipant objects.
 		$group = new ActivityGroup();
@@ -121,7 +121,7 @@ class ActionManager {
 		}
 		return $group;
 	}
-	
+
 	public function createBoutParticipant(ActivityBout $bout, ActivityParticipant $part) {
 		$boutPart = new ActivityBoutParticipant();
 		$this->em->persist($boutPart);
@@ -129,7 +129,7 @@ class ActionManager {
 		$boutPart->setParticipant($part);
 		return $boutPart;
 	}
-	
+
 	public function createBoutGroup(ActivityBout $bout, ActivityGroup $group) {
 		$boutGroup = new ActivityBoutGroup();
 		$this->em->persist($boutGroup);
@@ -137,31 +137,32 @@ class ActionManager {
 		$boutGroup->setParticipant($group);
 		return $boutGroup;
 	}
-		
+
 	/*
 	ACTIVITY CREATE FUNCTIONS
 	*/
-		
+
 	public function createDuel(ActivtyType $type, ActivitySubType $subType, Character $me, Character $them, Style $meStyle = null, Style $themStyle = null) {
 		if ($type->getName() == 'duel') {
 			if ($act = $this->create($type, $subType, $char)) {
-				$act->setName('Duel between '.$char-.getName().' and '.$recip->getName());
-				
+				$act->setName('Duel between '.$char->getName().' and '.$recip->getName());
+
 				$bout = $this->createBout($act, $subType);
-				
+
 				$mePart = $this->createParticipant($act, $me, $meStyle);
 				$themPart = $this->createParticipant($act, $them, $themStyle);
-				
+
 				$meBP = $this->createBoutParticipant($bout, $mePart);
 				$themBP = $this->createBoutParticipant($bout, $themPart);
-				
+
 				$this->em->flush();
 				return $act;
 			} else {
 				return 'Verification check failed.';
+			}
 		} else {
 			return 'Bad $type matchup.';
 		}
 	}
-	
+
 }
